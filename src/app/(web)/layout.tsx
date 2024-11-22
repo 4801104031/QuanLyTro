@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";  // font chữ
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
@@ -11,6 +11,7 @@ const poppins = Poppins({
   style: ['italic', 'normal'],
   variable: "--font-poppins"
 });
+// header title and description
 export const metadata: Metadata = {
   title: "Quản lý trọ IT MOTEL",
   description: "Dịch vụ phòng trọ tốt nhất",
@@ -24,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={poppins.className}
+        className={poppins.className} 
       >
         <main className="font-normal">
           <ThemeProvider>

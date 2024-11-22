@@ -1,10 +1,34 @@
 "use client"
-import { useState } from "react"
+import { ChangeEvent, FormEvent, use, useState } from "react"
 import { AiFillGithub } from "react-icons/ai"
 import { FcGoogle } from "react-icons/fc"
 
+const defaultFormData = {
+  emai: '',
+  name: '',
+  password: ''
+}
 const Auth = () => {
+  const [formData, setFormData] = useState(defaultFormData);
 
+  // handle input change
+  const handleInputChange = (event:ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = event.target;
+    setFormData({...formData, [name]: value})
+  }
+
+  // handle summit
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      console.log(formData);
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setFormData(defaultFormData)
+    }
+  }
     const inputStyles = "border border-gray-300 sm:text-sm text-black rounded: lg block w-full p-2.5 focus:outline-none"
   return (
     <section className="container mx-auto">
@@ -20,28 +44,32 @@ const Auth = () => {
             </span>
 
         </div>
-        <form className="space-y-4 md:space-y-6">
+
+        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
             <input type="email" 
             name="email" 
-            id = "email"
             placeholder="name@company.com"
             required
             className={inputStyles}
+            value={formData.emai}
+            onChange={handleInputChange}
             />
             <input type="text" 
             name="name" 
-            id = "name"
             placeholder="Phan Nam"
             required
             className={inputStyles}
+            value={formData.name}
+            onChange={handleInputChange}
             />
             <input type="password" 
             name="password" 
-            id = "password"
             placeholder="password"
             required
             minLength={6}
             className={inputStyles}
+            value={formData.name}
+            onChange={handleInputChange}
             />
             <button type="submit" 
             className="w-full bg-tertiary-dark focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center">
