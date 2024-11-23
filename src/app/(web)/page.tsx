@@ -1,9 +1,11 @@
 import Image from "next/image";
-
-const Home = () =>{
+import HeroSection from "@/components/HeroSection/HeroSection";
+const Home = () => {
   return (
-    <>Home</>
+    <>
+      <HeroSection />
+    </>
   );
-}
+};
 
 export default Home;
