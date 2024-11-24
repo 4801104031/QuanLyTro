@@ -64,7 +64,7 @@ const Search: FC<Props> = ({
         <button
           className="btn-primary"
           type="button"
-          //   onClick={handleFilterClick}
+             onClick={handleFilterClick}
         >
           Search
         </button>

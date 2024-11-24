@@ -1,12 +1,11 @@
 import Image  from "next/image"
 export const heading1 = (
     <>
-        <h1 className="font-heading mb-6">Explore Our Exquistite Motel</h1>
+        <h1 className="font-heading mb-6">Khám Phá Phòng Trọ Của Chúng Tôi</h1>
         <p className="text-[#4a4a4a] dark:text-[#ffffffea] mb-12 max-w-lg">
-            Experience an Exquisite Motel Immersed in Rich History and Timeless
-            Elegance
+        Trải Nghiệm Phòng Trọ Hiện Đại Với Đầy Đủ Tiện Nghi Và Sự Thoải Mái
         </p>
-        <button className="btn-primary">Get Started</button>
+        <button className="btn-primary">Bắt đầu</button>
     </>
 ) 
 // fast load
