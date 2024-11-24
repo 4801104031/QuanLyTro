@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 
-type Props = {
+type Props = {  // định nghĩa kiểu dữ liệu cho các props của một React component.
   endValue: number;
   duration: number;
 };
@@ -26,7 +26,7 @@ const CountUpNumber: FC<Props> = ({ endValue, duration }) => {
 
     animationFrameId = requestAnimationFrame(updateCount);
 
-    return () => cancelAnimationFrame(animationFrameId);
+    return () => cancelAnimationFrame(animationFrameId);  // clean id
   }, [endValue, duration]);
 
   return (
