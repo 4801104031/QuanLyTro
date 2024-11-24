@@ -1,9 +1,21 @@
-import Search from "../Search/Search"
+"use client";
+
+import { useState } from "react";
+
+import Search from "../Search/Search";
 
 const PageSearch = () => {
-    return (
-        <Search/>
-    )
-}
+  const [roomTypeFilter, setRoomTypeFilter] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-export default PageSearch
+  return (
+    <Search
+      roomTypeFilter={roomTypeFilter}
+      searchQuery={searchQuery}
+      setRoomTypeFilter={setRoomTypeFilter}
+      setSearchQuery={setSearchQuery}
+    />
+  );
+};
+
+export default PageSearch;
