@@ -26,11 +26,11 @@ const Rooms = () => {
         return getRooms()
     }
     const{data, error, isLoading} = useSWR("get/hotelRooms",fetchData);
+    if (error) throw new Error('Cannot fetch data');
+  if (typeof data === 'undefined' && !isLoading)
+    throw new Error('Cannot fetch data');
 
-    if(error) throw new Error("Cannot fetch data");
-    if(typeof data === "undefined" && !isLoading)
-        throw new Error('Cannot fetch data')
-
+    
     const filterRooms = (rooms: Room[]) =>{
         return rooms.filter(room => {
             //Apply room type filter
@@ -61,7 +61,7 @@ const Rooms = () => {
                 ))}
 
        </div>
-    </div>
+    </div> 
 }
 
 export default Rooms

@@ -69,7 +69,7 @@ const Header = () => {
           <Link href="/">Trang chủ</Link>
         </li>
         <li className="hover:-translate-y-2 duration-500 transition-all">
-          <Link href="/">Phòng trọ</Link>
+          <Link href="/rooms">Phòng trọ</Link>   
         </li>
         <li className="hover:-translate-y-2 duration-500 transition-all">
           <Link href="/">Liên hệ</Link>
