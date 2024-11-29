@@ -1,5 +1,9 @@
 // import { CreateReviewDto, Review } from "./../models/review";
 import axios from "axios";
+import { Booking } from "@/models/booking";
+import { Review } from "@/models/review";
+import { CreateReviewDto } from "@/models/review";
+import { UpdateReviewDto } from "@/models/review";
 
 import { CreateBookingDto, Room } from "@/models/room";
 import sanityClient from "./sanity";
@@ -15,7 +19,7 @@ export async function getFeaturedRoom() {
   );
 
   return result;
-} 
+}
 
 export async function getRooms() {
   const result = await sanityClient.fetch<Room[]>(
@@ -31,7 +35,7 @@ export async function getRoom(slug: string) {
     queries.getRoom,
     { slug },
     { cache: "no-cache" }
-  );   
+  );
 
   return result;
 }
