@@ -45,7 +45,7 @@ const BookRoomCta: FC<Props> = (props) => {
   };
 
   return (
-    <div className="px-7 px-6">
+    <div className="px-7 py-6">
       <h3>
         <span
           className={`${discount ? "text-gray-400" : ""} : font-bold text-xl`}
