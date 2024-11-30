@@ -18,7 +18,7 @@ export async function POST(req: Request, res: Response) {
   } catch (error: any) {
     return new NextResponse("Webhook Error:${error.message}", { status: 500 });
   }
-
+  console.log(event)
   //load our event
   switch (event.type) {
     case checkout_session_completed:
