@@ -1,5 +1,5 @@
-import { getUserData } from "@/libs/apis";
-import { authOptions } from "@/libs/auth";
+import { getUserData } from "../../../libs/apis";
+import { authOptions } from "../../../libs/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 

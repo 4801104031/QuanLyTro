@@ -13,11 +13,10 @@ import toast from "react-hot-toast";
 import { getStripe } from "@/libs/stripe";
 import { Roboto_Mono } from "next/font/google";
 import { useState } from "react";
+import React, {use} from "react";
 
 const RoomDetails = (props: { params: { slug: string } }) => {
-  const {
-    params: { slug },
-  } = props;
+  const { slug } = React.use(props.params);
   // ??
   const [checkinDate, setCheckinDate] = useState<Date | null>(null);
   const [checkoutDate, setCheckoutDate] = useState<Date | null>(null);

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
+import { createBooking, updateHotelRoom } from '@/libs/apis';
 const checkout_session_completed = "checkout.session.completed";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: "2024-11-20.acacia",
@@ -18,13 +19,43 @@ export async function POST(req: Request, res: Response) {
   } catch (error: any) {
     return new NextResponse("Webhook Error:${error.message}", { status: 500 });
   }
-  console.log(event)
+  // console.log(event)
   //load our event
   switch (event.type) {
     case checkout_session_completed:
       const session = event.data.object;
-      console.log(session);
+      // console.log('session => ',session);
       //Create a booking
+      const {
+        // @ts-ignore
+        metadata: {
+          adults,
+          checkinDate,
+          checkoutDate,
+          children,
+          hotelRoom,
+          numberOfDays,
+          user,
+          discount,
+          totalPrice,
+        },
+      } = session;
+
+      await createBooking({
+        adults: Number(adults),
+        checkinDate,
+        checkoutDate,
+        children: Number(children),
+        hotelRoom,
+        numberOfDays: Number(numberOfDays),
+        discount: Number(discount),
+        totalPrice: Number(totalPrice),
+        user,
+      });
+
+      //   Update hotel Room
+      await updateHotelRoom(hotelRoom);
+
       return NextResponse.json("Booking successful", {
         status: 200,
         statusText: "Booking Successful",
