@@ -8,25 +8,50 @@ import LoadingSpinner from "../../loading";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import { FaSignOutAlt } from "react-icons/fa";
-
+import { BsJournalBookmarkFill } from "react-icons/bs";
+import { GiMoneyStack } from "react-icons/gi";
+import React, { useEffect, useState } from "react";
+import Table from "@/components/Table/Table";
+import Chart from "@/components/Chart/Chart";
 const UserDetails = (props: { params: { id: string } }) => {
+    const [userId, setUserId] = useState<string | null>(null);
+
+    const [currentNav, setCurrentNav] = useState<
+        'bookings' | 'amount' | 'ratings'
+    >('bookings');
+
+    const [roomId, setRoomId] = useState<string | null>(null);
+    const [isRatingVisible, setIsRatingVisible] = useState(false);
+
+    const toggleRatingModal = () => setIsRatingVisible(prevState => !prevState);
+    useEffect(() => {
+        // Giải nén params.id và set vào state
+        if (props.params.id) {
+            setUserId(props.params.id);
+        }
+    }, [props.params]);
+
     const fetchUserData = async () => {
         const { data } = await axios.get<User>("api/users");
         return data;
-    }
-    const {
-        params: { id: userId },
-    } = props
-    const fetchUserBooking = async () => getUserBookings(userId)
-    const { data: userBookings, error, isLoading } = useSWR("/api/userbooking", fetchUserBooking);
+    };
+
+    const fetchUserBooking = async () => {
+        if (!userId) return; // Đảm bảo userId đã có
+        return getUserBookings(userId);
+    };
+
+    const { data: userBookings, error, isLoading } = useSWR(userId ? "/api/userbooking" : null, fetchUserBooking);
     const {
         data: userData,
         isLoading: loadingUserData,
         error: errorGettingUserData
-    } = useSWR("api/users", fetchUserData)
+    } = useSWR("/api/users", fetchUserData);
 
-
-    if (error || errorGettingUserData) throw new Error('Cannot fetch data');
+    if (error || errorGettingUserData) {
+        console.error(error || errorGettingUserData);  // Log lỗi để hiểu rõ hơn về vấn đề
+        throw new Error('Cannot fetch data');
+    }
     if (typeof userBookings === 'undefined' && !isLoading)
         throw new Error('Cannot fetch data');
 
@@ -35,9 +60,7 @@ const UserDetails = (props: { params: { id: string } }) => {
 
     if (loadingUserData) return <LoadingSpinner />;
     if (!userData) throw new Error('Cannot fetch data');
-    if (!userData) throw new Error('Cannot fetch data');
 
-    console.log('userdata', userData)
     return (
         <div className='container mx-auto px-2 md:px-4 py10'>
             <div className='grid md:grid-cols-12 gap-10'>
@@ -81,9 +104,74 @@ const UserDetails = (props: { params: { id: string } }) => {
                             width={56}
                             height={56}
                             src={userData.image}
-                            alt='User  Name'
+                            alt='User Name'
                         />
                     </div>
+                    <p className='block w-fit md:hidden text-sm py-2'>
+                        {userData.about ?? ''}
+                    </p>
+                    {/* ngày tham gia */}
+                    <p className='text-xs py-2 font-medium'>
+                        Joined In {userData._createdAt.split('T')[0]}
+                    </p>
+
+                    <div className='md:hidden flex items-center my-2'>
+                        <p className='mr-2'>Sign out</p>
+                        <FaSignOutAlt
+                            className='text-3xl cursor-pointer'
+                            onClick={() => signOut({ callbackUrl: '/' })}
+                        />
+                    </div>
+
+                    <nav className='sticky top-0 px-2 w-fit mx-auto md:w-full md:px-5 py-3 mb-8 text-gray-700 border border-gray-200 rounded-lg bg-gray-50 mt-7'>
+                        <ol
+                            className={`${currentNav === 'bookings' ? 'text-blue-600' : 'text-gray-700'
+                                } inline-flex mr-1 md:mr-5 items-center space-x-1 md:space-x-3`}
+                        >
+                            <li
+                                onClick={() => setCurrentNav('bookings')}
+                                className='inline-flex items-center cursor-pointer'
+                            >
+                                <BsJournalBookmarkFill />
+                                <a className='inline-flex items-center mx-1 md:mx-3 text-xs md:text-sm font-medium'>
+                                    Current Bookings
+                                </a>
+                            </li>
+                        </ol>
+                        <ol
+                            className={`${currentNav === 'amount' ? 'text-blue-600' : 'text-gray-700'
+                                } inline-flex mr-1 md:mr-5 items-center space-x-1 md:space-x-3`}
+                        >
+                            <li
+                                onClick={() => setCurrentNav('amount')}
+                                className='inline-flex items-center cursor-pointer'
+                            >
+                                <GiMoneyStack />
+                                <a className='inline-flex items-center mx-1 md:mx-3 text-xs md:text-sm font-medium'>
+                                    Amount Spent
+                                </a>
+                            </li>
+                        </ol>
+                    </nav>
+
+                    {currentNav === 'bookings' ? (
+                        userBookings && (
+                            <Table
+                                bookingDetails={userBookings}
+                                setRoomId={setRoomId}
+                                toggleRatingModal={toggleRatingModal}
+                            />
+                        )
+                    ) : (
+                        <></>
+                    )}
+
+                    {currentNav === 'amount' ? (
+                        userBookings && <Chart userBookings={userBookings} />
+                    ) : (
+                        <></>
+                    )}
+
                 </div>
 
             </div>
@@ -91,4 +179,4 @@ const UserDetails = (props: { params: { id: string } }) => {
     )
 }
 
-export default UserDetails
+export default UserDetails;
